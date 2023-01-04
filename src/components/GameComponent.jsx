@@ -10,9 +10,8 @@ function GameComponent() {
   const [correctChoices, setCorrectChoices] = useState(0);
   // correct choicec on evely level
   const [score, setScore] = useState(0);
-
+  // best score within all attempts
   const [highScore, setHighScore] = useState(0);
-  // card is choosen for the second time
   // is the game active
   const [isGame, setIsGame] = useState(undefined);
 
@@ -78,12 +77,21 @@ function GameComponent() {
   }
 
   return (
-    <main>
-      {!isGame && <button onClick={handleGame}>Start Game</button>}
-      {<h2>High Score: {highScore}</h2>}
-      {isGame && <h1>{`Level ${level}`}</h1>}
-      {isGame && <h2>{score}</h2>}
-      <div className="flex">
+    <main className="p-4 flex flex-col items-center w-full lg:max-w-7xl">
+      <p className="text-green-200 text-3xl p-1 w-full">{`Score: ${score}`}</p>
+      <p className="text-yellow-500 text-sm p-1 w-full">{`High Score: ${highScore}`}</p>
+      {!isGame && (
+        <button
+          onClick={handleGame}
+          className="m-8 px-8 py-2.5 text-2xl hover:animate-pulse bg-zinc-300 text-gray-900 uppercase font-bold border-zinc-600 hover:bg-slate-400 border-4"
+        >
+          Start Game
+        </button>
+      )}
+      {isGame && (
+        <p className="mt-2 p-2 text-4xl text-gray-50">{`LEVEL ${level}`}</p>
+      )}
+      <div className="flex flex-wrap px-4 py-2 justify-center gap-2">
         {isGame &&
           ids.map((index) => (
             <Card key={index} index={index} checkHandler={checkIfPressed} />

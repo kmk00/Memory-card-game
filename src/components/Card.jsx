@@ -17,13 +17,13 @@ function Card(props) {
       onClick={props.checkHandler}
       className={
         isPressed
-          ? "bg-green-300 bg-opacity-30 h-32 w-32"
-          : "bg-blue-400 bg-opacity-30 h-32 w-32"
+          ? "bg-green-300 bg-opacity-30 w-28 md:w-32 lg:w-36"
+          : "bg-blue-400 bg-opacity-30 w-28 hover:scale-105 md:w-32 lg:w-36"
       }
     >
       <img
         onClick={press}
-        className="h-32 border border-zinc-800"
+        className="w-28 md:w-32 lg:w-36 border border-zinc-800"
         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.index}.png`}
       ></img>
     </div>
