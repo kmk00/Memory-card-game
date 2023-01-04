@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Card(props) {
-  const [isPressed, setIsPressed] = useState(false);
+  const [isPressed, setIsPressed] = useState(undefined);
+
+  useEffect(() => {
+    props.checkHandler(isPressed);
+  }, [isPressed]);
 
   function press() {
-    console.log(isPressed);
-    setIsPressed(true);
+    if (isPressed === true) setIsPressed(false);
+    if (isPressed === undefined) setIsPressed(true);
   }
 
   return (

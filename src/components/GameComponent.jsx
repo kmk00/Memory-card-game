@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 
 function GameComponent() {
+  //display level
   const [level, setLevel] = useState(1);
+  //image ids
   const [ids, setIds] = useState([]);
-  //generate random numbers from 1-500
-  //add it to array
+  // correct choices on level
+  const [correctChoices, setCorrectChoices] = useState(0);
+  // correct choicec on evely level
+  const [score, setScore] = useState(0);
+  // card is choosen for the second time
+  const [isFailed, setIsFailed] = useState(false);
+  // is the game active
+  const [isGame, setIsGame] = useState(false);
+
   const randomInteger = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -14,9 +23,12 @@ function GameComponent() {
     return temp.sort(() => Math.random() - 0.5);
   }
 
-  function checkIfPressed(e) {
-    console.log(e);
-    shuffleArray();
+  function checkIfPressed(isPressed) {
+    if (isPressed === true) {
+      setCorrectChoices((prev) => prev + 1);
+      shuffleArray();
+    }
+    if (isPressed === false) setIsGame(false);
   }
 
   useEffect(() => {
@@ -26,21 +38,29 @@ function GameComponent() {
       if (!array.includes(rndInt)) array.push(rndInt);
     }
     setIds(array);
-  }, []);
+  }, [isGame]);
 
   function shuffleArray() {
-    console.log("ids przed: " + ids);
     const temp = shuffle();
     setIds(temp);
-    console.log("ids po: " + ids);
+  }
+
+  function handleGame() {
+    setIsGame(true);
   }
 
   return (
     <main>
-      <h1 className="text-white">{`Level ${level}`}</h1>
-      {ids.map((index) => (
-        <Card key={index} index={index} checkHandler={checkIfPressed} />
-      ))}
+      {!isGame && (
+        <button className="text-white" onClick={handleGame}>
+          Start Game
+        </button>
+      )}
+      {isGame && <h1 className="text-white">{`Level ${level}`}</h1>}
+      {isGame &&
+        ids.map((index) => (
+          <Card key={index} index={index} checkHandler={checkIfPressed} />
+        ))}
     </main>
   );
 }
