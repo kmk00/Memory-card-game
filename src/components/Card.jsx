@@ -15,7 +15,11 @@ function Card(props) {
   return (
     <div
       onClick={props.checkHandler}
-      className="bg-blue-400 bg-opacity-30 h-32 w-32"
+      className={
+        isPressed
+          ? "bg-green-300 bg-opacity-30 h-32 w-32"
+          : "bg-blue-400 bg-opacity-30 h-32 w-32"
+      }
     >
       <img
         onClick={press}
