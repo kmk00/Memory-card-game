@@ -15,13 +15,10 @@ function Card(props) {
   return (
     <div
       onClick={props.checkHandler}
-      className={
-        isPressed
-          ? "bg-green-300 bg-opacity-30 w-28 md:w-32 lg:w-36"
-          : "bg-blue-400 bg-opacity-30 w-28 hover:scale-105 md:w-32 lg:w-36"
-      }
+      className="bg-slate-700 bg-opacity-60 w-28 border-4 border-slate-800 hover:scale-105 md:w-32 lg:w-36 active:opacity-50"
     >
       <img
+        draggable={false}
         onClick={press}
         className="w-28 md:w-32 lg:w-36 border border-zinc-800"
         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.index}.png`}
