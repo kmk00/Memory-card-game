@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import Scoreboard from "./Scoreboard";
+import { auth, db } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 function GameComponent() {
   //display level
@@ -16,6 +19,7 @@ function GameComponent() {
   const [isGame, setIsGame] = useState(undefined);
 
   function generateID() {
+    //generate id for pokecard API
     let array = [];
     for (let i = 0; array.length < level + 3; i++) {
       let rndInt = randomInteger(1, 500);
@@ -27,23 +31,28 @@ function GameComponent() {
   const randomInteger = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
+  //shuffle cards after pick
   function shuffle() {
     let temp = [...ids];
     return temp.sort(() => Math.random() - 0.5);
   }
 
   function checkIfPressed(isPressed) {
+    //pick correct card
     if (isPressed === true) {
       setScore((prev) => prev + 1);
       setCorrectChoices((prev) => prev + 1);
       shuffleArray();
     }
 
+    //pick wrong card
     if (isPressed === false) {
+      sendScore();
       setLevel(0);
       setIsGame(false);
     }
 
+    //shuffle cards and go to the next lever
     if (correctChoices === ids.length - 1) {
       setIds([]);
       setLevel((prev) => prev + 1);
@@ -52,10 +61,22 @@ function GameComponent() {
     }
   }
 
+  const sendScore = async () => {
+    const { uid, displayName } = auth.currentUser;
+    await addDoc(collection(db, "scoreboard"), {
+      score: score,
+      name: displayName,
+      uid,
+      timestamp: serverTimestamp(),
+    });
+  };
+
+  //set new high score local
   useEffect(() => {
     if (score > highScore) setHighScore(score);
   }, [score]);
 
+  //after new level
   useEffect(() => {
     setCorrectChoices(0);
     setIds(generateID());
@@ -73,6 +94,7 @@ function GameComponent() {
   }
 
   function handleGame() {
+    //start new game
     setScore(0);
     setIsGame(true);
   }
@@ -80,7 +102,7 @@ function GameComponent() {
   return (
     <main className="p-4 flex flex-col items-center w-full lg:max-w-7xl">
       <p className="text-green-200 text-3xl p-1 w-full tracking-wider">{`Score: ${score}`}</p>
-      <p className="text-yellow-500 text-md  p-1 w-full tracking-wider">{`High Score: ${highScore}`}</p>
+      <p className="text-yellow-500 text-xl  p-1 w-full tracking-wider">{`Highest Session Score: ${highScore}`}</p>
       {!isGame && (
         <button
           onClick={handleGame}
@@ -90,7 +112,10 @@ function GameComponent() {
         </button>
       )}
       {!isGame && highScore > 0 && (
-        <h1 className="text-red-500 text-3xl">You lost!</h1>
+        <>
+          <h1 className="text-red-500 text-3xl p-4">You lost!</h1>
+          <Scoreboard />
+        </>
       )}
       {isGame && (
         <p className="mt-2 p-2 text-4xl text-gray-50">{`LEVEL ${level}`}</p>
