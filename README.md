@@ -7,8 +7,9 @@ Players must select every card in the level. If a player chooses the same card t
 Players must log into their Google account to play the game. When a player loses, their best results are retrieved from the Firebase database and displayed on the page.
 
 Used technologies:
- -React
- -Tailwindcss
- -Firebase
- -Vite
- -Poke API
+- React Js
+- Tailwindcss
+- Next Js
+- React context API
+- React canvas draw
+- React icons
