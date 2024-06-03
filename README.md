@@ -10,6 +10,7 @@ Used technologies:
 - React Js
 - Tailwindcss
 - Next Js
+- Firebase
 - React context API
 - React canvas draw
 - React icons
